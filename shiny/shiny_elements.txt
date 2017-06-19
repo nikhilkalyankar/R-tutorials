@@ -1,0 +1,27 @@
+shinyUI
+ fluidPage
+	titlePanel
+	sidebarLayout
+		sidePanel
+			html elements (?builder)
+			sliderInput
+			checkboxInput
+			textInput
+			submitButton
+		,		
+		mainPanel
+			html elements (?builder)
+			plotOutput
+			textOutput
+			tabsetPanel
+				type = "tabs"
+				tabPanel
+
+
+shinyServer
+	function(input,output)
+		output$var <- renderPlot or renderText ({
+
+		calcSum <- reactive({
+
+https://shiny.rstudio.com/

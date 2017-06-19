@@ -1,0 +1,146 @@
+---
+title: "Regression Plots"
+output: html_document
+---
+
+## Histogram for comparing child and parent heights from the galton dataset
+
+```{r setup,warning=FALSE,message=FALSE}
+library(UsingR)
+library(reshape2); 
+data(galton)
+long <- melt(galton); 
+g <- ggplot(long,aes(x=value,fill=variable))
+g <- g + geom_histogram(colour="black",binwidth = 1)
+g <- g + facet_grid(.~variable)
+g
+
+```
+
+## Implementation of Manipulate function for determining the least mean squared error (mse) with mu
+
+
+```{r}
+
+library(manipulate)
+myHist <- function(mu){
+  mse <- mean((galton$child - mu)^2)
+  g <- ggplot(galton,aes(x=child)) + geom_histogram(fill ="salmon",colour="black",binwidth = 1)
+  g <- g + geom_vline(xintercept=mu,size=3)
+  g <- g + ggtitle(paste("mu = ",mu, ", MSE = ", round(mse,2),sep =""))
+  g
+
+}
+
+myHist(mu = mean(galton$child))
+#manipulate(myHist(mu), mu = slider(62, 74, step = 0.5))
+```
+
+
+```{r}
+ggplot(galton,aes(x=parent,y=child)) + geom_point()
+
+```
+
+
+```{r}
+library(dplyr)
+freqData <- as.data.frame(table(galton$child, galton$parent))
+names(freqData) <- c("child", "parent", "freq")
+freqData$child <- as.numeric(as.character(freqData$child))
+freqData$parent <- as.numeric(as.character(freqData$parent))
+g <- ggplot(filter(freqData, freq > 0), aes(x = parent, y = child))
+g <- g  + scale_size(range = c(2, 20), guide = "none" )
+g <- g + geom_point(colour="grey50", aes(size = freq+20, show_guide = FALSE))
+g <- g + geom_point(aes(colour=freq, size = freq))
+g <- g + scale_colour_gradient(low = "lightblue", high="white")                    
+g
+```
+
+
+
+```{r}
+library(UsingR)
+data("diamond")
+g <- ggplot(diamond,aes(x = carat,y=price))
+g <- g + xlab("Mass (carats)")
+g <- g + ylab("Price (SIN $)")
+g <- g + geom_point(size = 6,colour = "black", alpha = 0.2)
+g <- g + geom_point(size = 5,colour = "blue", alpha = 0.2)
+g <- g + geom_smooth(method = "lm", colour = "black")
+g
+```
+
+### Linear Regression Fit
+
+```{r}
+fit <- lm(price ~ carat, data = diamond)
+coef(fit)
+
+newx <- c(0.16, 0.27, 0.34)
+coef(fit)[1] + coef(fit)[2] * newx
+
+predict(fit, newdata = data.frame(carat = newx))
+
+```
+
+### Linear Regression Fit (substract the mean)
+
+```{r}
+fit2 <- lm(price ~ I(carat - mean(carat)), data = diamond)
+coef(fit2)
+
+```
+
+### Linear Regression Fit (multiply by random positive number)
+
+```{r}
+fit3 <- lm(price ~ I(carat*10), data = diamond)
+coef(fit3)
+
+```
+
+### Residuals
+
+```{r}
+y <- diamond$price; x <- diamond$carat; n <- length(y)
+fit <- lm(y ~ x)
+e <- resid(fit)
+yhat <- predict(fit)
+
+max(abs(e -(y - yhat)))
+# 9.485746e-13
+max(abs(e - (y - coef(fit)[1] - coef(fit)[2] * x)))
+# 9.485746e-13
+
+#Sum of resdiuals is zero and sum of product of residuals and x is also zero
+sum(e)
+sum(e * x)
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```

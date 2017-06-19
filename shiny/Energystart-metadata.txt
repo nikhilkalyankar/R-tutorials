@@ -1,0 +1,302 @@
+The One- to Four-Family Home Performance with ENERGY STAR® Program is a market transformation program that uses Building Performance Institute (BPI) Goldstar contractors to install comprehensive energy-efficient improvements.  The program is designed to use building science and a whole-house approach to reduce energy use in the State’s existing one-to-four family and low-rise multifamily residential buildings and capture heating fuel and electricity-related savings.  The Program provides incentives on eligible energy efficiency improvements including building shell measures, high efficiency heating and cooling measures, ENERGY STAR appliances and lighting. \r\n\r\nD I S C L A I M E R: Estimated Annual kWh Savings, Estimated Annual MMBtu Savings, and First Year Energy Savings $ Estimate represent contractor reported savings derived from energy modeling software calculations and not actual realized energy savings. The accuracy of the Estimated Annual kWh Savings and Estimated Annual MMBtu Savings for projects has been evaluated by an independent third party. The results of the impact analysis indicate that, on average, actual savings amount to 35 percent of the Estimated Annual kWh Savings and 65 percent of the Estimated Annual MMBtu Savings. The analysis did not evaluate every single project, but rather a sample of projects from 2007 and 2008, so the results are applicable to the population on average but not necessarily to any individual project which could have over or under achieved in comparison to the evaluated savings. The results from the impact analysis will be updated when more recent information is available. While many factors influence the degree to which estimated savings are realized, including the use of the modeling software itself, some reasons individual households may realize savings different from those projected include, but are not limited to, changes in the number or needs of members of a household, changes in occupancy schedules, changes in energy usage behaviors or appliances and electronics installed in the home, or beginning or ending a home business. In addition, the program has evolved since the last impact analysis, introducing a change in the mix of measures that are installed, and use of additional modeling software tools and protocols.  Further, with the current technology improvements and regulatory changes being considered we are actively working toward a more accurate future. For more information, please refer to the Evaluation Report published on NYSERDA’s website at http://www.nyserda.ny.gov/-/media/Files/Publications/PPSER/Program-Evaluation/2012ContractorReports/2012-HPwES-Impact-Report-with-Appendices.pdf.\r\n\r\nStatewide Home Performance with ENERGY STAR Program dataset includes the following data points for projects completed during Green Jobs Green-NY, beginning November 15, 2010 through March 31, 2016: Home Performance Project ID, Home Performance Site ID, Project County, Project City, Project Zip, Gas Utility, Electric Utility, Project Completion, Date, Customer Type, Low-Rise or Home Performance Indicator, Total Project Cost (USD), Total Incentives (USD), Type of Program Financing, Amount Financed Through Program (USD), Pre-Retrofit Home Heating Fuel Type, Estimated Annual kWh Savings, Estimated Annual MMBtu Savings, First Year Energy Savings $ Estimate (USD), Homeowner Received Green Jobs-Green NY Free/Reduced Cost Audit (Y/N).
+
+{
+        "id" : 306538899,
+        "name" : "Reporting Period",
+        "dataTypeName" : "calendar_date",
+        "description" : "The time period covered by the data set",
+        "fieldName" : "reporting_period",
+        "position" : 1,
+        "renderTypeName" : "calendar_date",
+        "tableColumnId" : 41476761,
+        "width" : 178,
+        "format" : {
+          "view" : "date",
+          "align" : "center"
+        }
+      }, {
+        "id" : 306538900,
+        "name" : "Home Performance Project ID",
+        "dataTypeName" : "text",
+        "description" : "Unique identifier for project",
+        "fieldName" : "home_performance_project_id",
+        "position" : 2,
+        "renderTypeName" : "text",
+        "tableColumnId" : 36346858,
+        "width" : 263,
+        "format" : {
+          "displayStyle" : "plain",
+          "align" : "center"
+        }
+      }, {
+        "id" : 306538901,
+        "name" : "Home Performance Site ID",
+        "dataTypeName" : "text",
+        "description" : "Unique site identifier for location of the project",
+        "fieldName" : "home_performance_site_id",
+        "position" : 3,
+        "renderTypeName" : "text",
+        "tableColumnId" : 36346859,
+        "width" : 248,
+        "format" : {
+          "displayStyle" : "plain",
+          "align" : "center"
+        }
+      }, {
+        "id" : 306538902,
+        "name" : "Project County",
+        "dataTypeName" : "text",
+        "description" : "Name of county for project location",
+        "fieldName" : "project_county",
+        "position" : 4,
+        "renderTypeName" : "text",
+        "tableColumnId" : 36346860,
+        "width" : 180,
+        "format" : {
+          "displayStyle" : "plain",
+          "align" : "left"
+        }
+      }, {
+        "id" : 306538903,
+        "name" : "Project City",
+        "dataTypeName" : "text",
+        "description" : "Name of city for project location",
+        "fieldName" : "project_city",
+        "position" : 5,
+        "renderTypeName" : "text",
+        "tableColumnId" : 36346861,
+        "width" : 159,
+        "format" : {
+          "displayStyle" : "plain",
+          "align" : "left"
+        }
+      }, {
+        "id" : 306538904,
+        "name" : "Project Zip",
+        "dataTypeName" : "text",
+        "description" : "Name of zip code for project location",
+        "fieldName" : "project_zip",
+        "position" : 6,
+        "renderTypeName" : "text",
+        "tableColumnId" : 36346862,
+        "width" : 154,
+        "format" : {
+          "displayStyle" : "plain",
+          "align" : "center"
+        }
+      }, {
+        "id" : 306538905,
+        "name" : "Gas Utility",
+        "dataTypeName" : "text",
+        "description" : "Name of gas utility for project location, if blank then utility was not reported or project location is not served by a gas utility",
+        "fieldName" : "gas_utility",
+        "position" : 7,
+        "renderTypeName" : "text",
+        "tableColumnId" : 36346863,
+        "width" : 201,
+        "format" : {
+          "displayStyle" : "plain",
+          "align" : "center"
+        }
+      }, {
+        "id" : 306538906,
+        "name" : "Electric Utility",
+        "dataTypeName" : "text",
+        "description" : "Name of electric utility for project location",
+        "fieldName" : "electric_utility",
+        "position" : 8,
+        "renderTypeName" : "text",
+        "tableColumnId" : 36346864,
+        "width" : 201,
+        "format" : {
+          "displayStyle" : "plain",
+          "align" : "center"
+        }
+      }, {
+        "id" : 306538907,
+        "name" : "Project Completion Date",
+        "dataTypeName" : "calendar_date",
+        "description" : "Date final project completion paperwork was reviewed and approved by Program.",
+        "fieldName" : "project_completion_date",
+        "position" : 9,
+        "renderTypeName" : "calendar_date",
+        "tableColumnId" : 36346865,
+        "width" : 233,
+        "format" : {
+          "view" : "date",
+          "align" : "center"
+        }
+      }, {
+        "id" : 306538908,
+        "name" : "Customer Type",
+        "dataTypeName" : "text",
+        "description" : "Indicates if the homeowner received market rate incentives or assisted subsidy ",
+        "fieldName" : "customer_type",
+        "position" : 10,
+        "renderTypeName" : "text",
+        "tableColumnId" : 36346866,
+        "width" : 184,
+        "format" : {
+          "displayStyle" : "plain",
+          "align" : "center"
+        }
+      }, {
+        "id" : 306538909,
+        "name" : "Low-Rise or Home Performance Indicator",
+        "dataTypeName" : "text",
+        "description" : "Indicates Program project participated in",
+        "fieldName" : "low_rise_or_home_performance_indicator",
+        "position" : 11,
+        "renderTypeName" : "text",
+        "tableColumnId" : 36346867,
+        "width" : 334,
+        "format" : {
+          "displayStyle" : "plain",
+          "align" : "center"
+        }
+      }, {
+        "id" : 306538910,
+        "name" : "Total Project Cost (USD)",
+        "dataTypeName" : "number",
+        "description" : "Cost of project in US dollars (USD)",
+        "fieldName" : "total_project_cost_usd",
+        "position" : 12,
+        "renderTypeName" : "number",
+        "tableColumnId" : 36346868,
+        "width" : 239,
+        "format" : {
+          "precisionStyle" : "standard",
+          "noCommas" : "false",
+          "align" : "right"
+        }
+      }, {
+        "id" : 306538911,
+        "name" : "Total Incentives (USD)",
+        "dataTypeName" : "number",
+        "description" : "Amount of homeowner incentive (USD)",
+        "fieldName" : "total_incentives_usd",
+        "position" : 13,
+        "renderTypeName" : "number",
+        "tableColumnId" : 36346869,
+        "width" : 222,
+        "format" : {
+          "precisionStyle" : "standard",
+          "noCommas" : "false",
+          "align" : "right"
+        }
+      }, {
+        "id" : 306538912,
+        "name" : "Type of Program Financing",
+        "dataTypeName" : "text",
+        "description" : "Indicates type of financing a project received; if blank, then project was not financed",
+        "fieldName" : "type_of_program_financing",
+        "position" : 14,
+        "renderTypeName" : "text",
+        "tableColumnId" : 36346870,
+        "width" : 259,
+        "format" : {
+          "displayStyle" : "plain",
+          "align" : "center"
+        }
+      }, {
+        "id" : 306538913,
+        "name" : "Amount Financed Through Program (USD)",
+        "dataTypeName" : "number",
+        "description" : "Project loan amount in USD",
+        "fieldName" : "amount_financed_through_program_usd",
+        "position" : 15,
+        "renderTypeName" : "number",
+        "tableColumnId" : 36346871,
+        "width" : 334,
+        "format" : {
+          "precisionStyle" : "standard",
+          "noCommas" : "false",
+          "align" : "right"
+        }
+      }, {
+        "id" : 306538914,
+        "name" : "Pre-Retrofit Home Heating Fuel Type",
+        "dataTypeName" : "text",
+        "description" : "Indicates the pre-retrofit primary heating fuel type ",
+        "fieldName" : "pre_retrofit_home_heating_fuel_type",
+        "position" : 16,
+        "renderTypeName" : "text",
+        "tableColumnId" : 36346872,
+        "width" : 308,
+        "format" : {
+          "displayStyle" : "plain",
+          "align" : "center"
+        }
+      }, {
+        "id" : 306538915,
+        "name" : "Estimated Annual kWh Savings",
+        "dataTypeName" : "number",
+        "description" : "Annual post-retrofit electric savings estimate in kWh",
+        "fieldName" : "estimated_annual_kwh_savings",
+        "position" : 17,
+        "renderTypeName" : "number",
+        "tableColumnId" : 36346873,
+        "width" : 275,
+        "format" : {
+          "precisionStyle" : "standard",
+          "noCommas" : "false",
+          "align" : "right"
+        }
+      }, {
+        "id" : 306538916,
+        "name" : "Estimated Annual MMBtu Savings",
+        "dataTypeName" : "number",
+        "description" : "Annual post-retrofit MMBtu savings based on primary fuel type",
+        "fieldName" : "estimated_annual_mmbtu_savings",
+        "position" : 18,
+        "renderTypeName" : "number",
+        "tableColumnId" : 36346874,
+        "width" : 289,
+        "format" : {
+          "precisionStyle" : "standard",
+          "noCommas" : "false",
+          "align" : "right"
+        }
+      }, {
+        "id" : 306538917,
+        "name" : "First Year Energy Savings $ Estimate (USD)",
+        "dataTypeName" : "number",
+        "description" : "Estimated post-retrofit first year dollar savings (USD)",
+        "fieldName" : "first_year_energy_savings_estimate_usd",
+        "position" : 19,
+        "renderTypeName" : "number",
+        "tableColumnId" : 36346875,
+        "width" : 350,
+        "format" : {
+          "precisionStyle" : "standard",
+          "noCommas" : "false",
+          "align" : "right"
+        }
+      }, {
+        "id" : 306538918,
+        "name" : "Homeowner Received Green Jobs-Green NY Free/Reduced Cost Audit (Y/N)",
+        "dataTypeName" : "text",
+        "description" : "Indicator if the homeowner received a Free/Reduced Cost Green Jobs Green-NY audit prior to retrofit work",
+        "fieldName" : "homeowner_received_green_jobs_green_ny_free_reduced_cost_audit_y_n",
+        "position" : 20,
+        "renderTypeName" : "text",
+        "tableColumnId" : 36346876,
+        "width" : 521,
+        "format" : {
+          "displayStyle" : "plain",
+          "align" : "center"
+        }
+      }, {
+        "id" : 306538919,
+        "name" : "Location",
+        "dataTypeName" : "location",
+        "description" : "Municipal location based on supplied address location.",
+        "fieldName" : "location",
+        "position" : 21,
+        "renderTypeName" : "location",
+        "tableColumnId" : 36346877,
+        "width" : 197,
+        "format" : {
+          "view" : "address_coords",
+          "align" : "left"
+        }

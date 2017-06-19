@@ -1,0 +1,20 @@
+---
+title: "Energy Star"
+author: "Nikhil"
+date: "June 17, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+
+```{r, cache=TRUE}
+data <- read.csv("~/R/tutorials/datasets/energystar.csv")
+#data <- read.csv("https://data.ny.gov/api/views/assk-vu73/rows.csv?accessType=DOWNLOAD")
+
+```
+

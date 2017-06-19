@@ -1,0 +1,176 @@
+Welcome to the Analysis of New York State's Energy Star® Program
+========================================================
+author: Nikhil Kalyankar
+date: Jun 19, 2017
+autosize: true
+width: 1920
+height: 1080
+
+Introduction
+========================================================
+The One- to Four-Family Home Performance with ENERGY STAR® Program is a market transformation program that uses Building Performance Institute (BPI) Goldstar contractors to install comprehensive energy-efficient improvements. The program is designed to use building science and a whole-house approach to reduce energy use in the New York State’s existing one-to-four family and low-rise multifamily residential buildings and capture heating fuel and electricity-related savings. 
+
+This project is divided in to four phases:
+
+- Data Preview
+- Exploratory Graphs
+- Linear Regression Analysis and related graphs
+- Geospatial Overview
+
+For more details please visit <https://kalyankar.shinyapps.io/energy-star/>.
+
+Data and information source for this project <https://data.ny.gov/api/views/assk-vu73/rows.json?accessType=DOWNLOAD>
+
+
+
+Data Preview
+========================================================
+Selected columns
+```{r,echo=FALSE,cache=TRUE}
+library(dplyr)
+## Download the data
+# data <-read.csv("https://data.ny.gov/api/views/assk-vu73/rows.csv?accessType=DOWNLOAD")
+data <- read.csv("~/R/tutorials/shiny/IBRD-stats/energystar.csv")
+
+## Set clear and workable column names
+colnames(data) <-
+c(
+"reporting_period",
+"project_id",
+"site_id",
+"county",
+"city",
+"zip",
+"gas_utility",
+"electric_utility",
+"completion_date",
+"customer_type",
+"performance_indicator",
+"project_cost",
+"incentives",
+"type_of_financing",
+"amount_financed",
+"fuel_type",
+"savings_kwh",
+"savings_mmbtu",
+"savings_energy",
+"audit",
+"location"
+)
+
+## Declare labels
+labels <-
+list(
+"gas_utility" = "Gas Utility",
+"electric_utility" = "Electric Utility",
+"customer_type" = "Customer Type",
+"performance_indicator" = "Performance Indicator",
+"project_cost" = "Project Cost",
+"incentives" = "Incentives",
+"amount_financed" = "Amount Financed",
+"fuel_type" = "Fuel Type",
+"savings_kwh" = "Annual Savings KWH",
+"savings_mmbtu" = "Annual Savings MMBTU",
+"savings_energy" = "Annual Savings Energy",
+"audit" = "Audit"
+)
+
+## Functions for normalizing data and combining factor levels
+combofactor <-
+function(pattern_vector,
+replacement_vector,
+vec_data) {
+levels <- levels(vec_data)
+for (i in 1:length(pattern_vector))
+levels[which(pattern_vector[i] == levels)] <-
+replacement_vector[i]
+levels(vec_data) <- levels
+vec_data
+}
+normalize <- function(vector)
+{
+(vector - mean(vector)) / sd(vector)
+}
+## Combine factor variables
+data$fuel_type <-
+combofactor("Natural gas", "Natural Gas", data$fuel_type)
+data$gas_utility <-
+combofactor(
+c("Corning NATURAL Gas", ""),
+c("Corning Natural Gas", "Unknown Gas Provider"),
+data$gas_utility
+)
+
+## Group by factor variables and summarize on predictor and outcome variables
+data <-
+data %>% tbl_df %>% group_by(
+location,
+gas_utility,
+electric_utility,
+customer_type,
+performance_indicator,
+type_of_financing,
+fuel_type,
+audit
+) %>% summarize(
+project_cost = sum(project_cost),
+incentives = sum(incentives),
+amount_financed = sum(amount_financed),
+savings_kwh = sum(savings_kwh),
+savings_mmbtu = sum(savings_mmbtu),
+savings_energy = sum(savings_energy)
+) %>% data.frame()
+
+## Fitler dataset rows that have missing or incorrect location
+lat_num <-
+which(!is.na(as.numeric((
+gsub('.*\\((.*),.*', '\\1', data$location)
+))))
+data <- data[lat_num, ]
+
+data2 <-    data %>% tbl_df() %>% mutate(factor = data$fuel_type, outcome = data$savings_energy) %>%
+      group_by(factor) %>%
+      summarize(outcome = sum(outcome)) %>%
+      data.frame()
+
+data3 <-    data %>% tbl_df() %>% mutate(factor = data$fuel_type, predictor = data$project_cost) %>%
+      group_by(factor) %>%
+      summarize(predictor = sum(predictor)) %>%
+      data.frame()
+
+```
+
+```{r}
+library(dplyr)
+str(tbl_df(data))
+
+```
+
+Exploratory Graphs
+========================================================
+The relation of factors viz-a-viz the predictor and outcome columns
+
+```{r,echo=FALSE,dpi=300,out.width="960px",out.height="900px"}
+library(scales) 
+library(formattable) 
+library(ggplot2)
+th <- theme(title = element_text(face = "bold", size = 20), axis.title = element_text(face = "bold", size = 16), axis.text.x = element_text(face = "bold", size = 14), axis.text.y = element_text(face = "bold", size = 14), legend.text = element_text(face = "bold", size = 14),strip.text = element_text(face = "bold", size = 10))
+
+ggplot(data2, aes(factor, outcome)) + geom_col(width = .5) + th + labs(x = paste("Fuel Type"),y = paste("Annual Energy Savings"),
+title = paste("Fuel Type vs Annual Energy Savings"))  + scale_y_continuous(labels = dollar) + coord_flip() 
+
+ggplot(data3, aes(factor, predictor)) + geom_col(width = .5) + th + labs(x = paste("Fuel Type"),y = paste("Project Cost"),title = paste("Fuel Type vs Project Cost"))  + scale_y_continuous(labels = dollar) + coord_flip()
+```
+
+Linear Regression Analysis and related graphs
+========================================================
+```{r}
+fit <- lm(data = data, formula = savings_energy ~ project_cost)
+summary <- coef(summary(fit))
+paste("Intercept: ",summary[1][1], "Slope: ",summary[2][1])
+```
+
+```{r,echo=FALSE,fig.width=8,fig.height=4.5,dpi=300,out.width="1000px"}
+ggplot(data = data,aes(project_cost,savings_energy)) +geom_point(size = normalize(data$project_cost))+labs(title = paste("Project Cost vs Annual Energy Savings"),x = paste("Project Cost"),y = paste("Savings Energy")) + th +  scale_x_continuous(labels = dollar) +
+geom_smooth(method = "lm",se = FALSE,color = "black",formula = y ~ x) + scale_y_continuous(labels = comma)
+```
