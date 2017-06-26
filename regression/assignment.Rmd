@@ -1,0 +1,187 @@
+---
+title: 'Peer-graded Assignment: Regression Models Project'
+author: "Nikhil Kalyankar"
+date: "June 25, 2017"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+## Executive Summary
+Miles per gallon (*mpg*) is an important criteria for assessing and rating automobiles. It depends of various factors: fuel quality, weight, number of cylinders, engine efficiency, transmission efficiency, driver ability, road conditions, etc. The analysis presented in this report show that *manual transmission* is better than *automatic tranmission* for *mpg*. However, it is not possible to quantifiy the relationship.
+
+## Exploratory Analysis
+- **Describe the dateset**: The **mtcars** dataset of contains information on various cars set on 11 variables namely: **mpg** (Miles per gallon), **cyl** (Number of cylinders), **disp** (Displacement cubic inches), **hp** (Gross horsepower), **drat** Rear axle ration, **wt** (Weight 1000lbs), **qsec** (1/4 mile time), **vs** (V/S), **am** (Transmission; 0 = automatic; 1 = manual ), **gear** (Number of forward gears) and **carb** (Number of carburetors).
+
+- **Identify the key variables**: This report identifies the **mpg** and **am** variables as the key for the purpose of this report. Other variables particularly *cyl* and *gear* would be considered for additional analysis. 
+
+- **Explore the dataset**: Firstly, the mean **mpg** when grouped by *automatic* and *manual* transmission is **17.14737** and **24.39231** respectively. Secondly, the average **mpg** when grouped by *cyl* and *am* shows that the *mpg* values are  **higher** for *manual* transmission (Note: The values are very close in case of *8 cylinder* automobiles). The other variables related to *cyl* i.e., *wt*, *disp* and *hp* show similar results. Finally, the average **mpg** when grouped by *gear* and *am* shows that only **4 gear** automobiles have both types of transmission and again the *manual* transmission autombiles give **higher** **mpg**. We can consider that on an average **manual** transmission is **better** than **automatic** transmission. 
+
+##Regression Analysis
+The regression analysis with outcome variable **mpg** and predictor variable **am** by excluding the intercept term gives us the coefficients for automatic and manual as **17.14737** and **24.39231** respectively. This show that manual transmission gives higher *mpg*. Note: these values are same as the mean *mpg* when grouped by *am*. The next analysis with **wt** as an adddtional predictor variable changes the *am* coefficients to **37.321551** and **37.297936** respectively. It can be inferred that *wt* has significant impact on *mpg* that removes the effect of the type of transmission. The regression analysis ran on all variables by excluding the intercept term: lm(*mpg* ~ *.* - 1, data = *mtcars*) show that when all variables are considered together they do not have statistically significant impact. S
+
+### Is an automatic or manual transmission better for MPG?
+A manual transmission is surely better than an automatic transmission for MPG. 
+
+### Quantifying the MPG difference between automatic and manual transmissions.
+It is impossible to quantify the MPG difference between automatic and manual transmission as we have only two possible outcomes as the predictor variable can only provide two values. Additional variables are required for quantification.
+
+## Appendix
+### 1.1. Dataset Overview
+```{r,mtcars,echo=FALSE,warning=FALSE,message=FALSE}
+library(ggplot2)
+library(dplyr)
+knitr::kable(head(mtcars))
+```
+
+### 1.2. Dataset Summary
+```{r,echo=FALSE,warning=FALSE,message=FALSE, fig.height=1}
+knitr::kable(t(
+data.frame(
+unclass(summary(mtcars)),
+check.names = FALSE,
+stringsAsFactors = FALSE
+)
+))
+combofactor <-
+    function(pattern_vector,
+             replacement_vector,
+             vec_data) {
+      levels <- levels(vec_data)
+      for (i in 1:length(pattern_vector))
+        levels[which(pattern_vector[i] == levels)] <-
+          replacement_vector[i]
+      levels(vec_data) <- levels
+      vec_data
+    }
+
+mtcars$am <- combofactor(c(0,1),c("automatic","manual"),factor(mtcars$am))
+
+mtcars_am <- mtcars %>% group_by(am) %>% summarize(mpg = mean(mpg))
+
+mtcars_cyl <-
+mtcars %>% group_by(am, cyl) %>% summarize(mpg = mean(mpg))
+
+mtcars_gear <-
+mtcars %>% group_by(am, gear) %>% summarize(mpg = mean(mpg))
+
+g1 <- ggplot(data = mtcars_am, aes(x = am, y = mpg)) + geom_col(width = .25) + coord_flip()
+g2 <- ggplot(data = mtcars_cyl, aes(x = am, y = mpg)) + geom_col(width = .5) + facet_grid(facets = cyl ~ .) + coord_flip()
+g3 <- ggplot(data = mtcars_gear, aes(x = am, y = mpg)) + geom_col(width = .5) + facet_grid(facets = gear ~ .) + coord_flip()
+
+```
+
+### 1.3. Summary of factorized *am*
+```{r,echo=FALSE,warning=FALSE,message=FALSE, fig.height=1}
+knitr::kable(t(
+data.frame(am = 
+unclass(summary(mtcars$am)),
+check.names = FALSE,
+stringsAsFactors = FALSE
+)
+))
+```
+
+### 2. Average *mpg* grouped by *am*
+
+```{r,echo=FALSE,warning=FALSE,message=FALSE, fig.height=1}
+knitr::kable(mtcars_am)
+g1
+```
+
+### 3. Average *mpg* grouped by *cyl* and *am*
+```{r,echo=FALSE,warning=FALSE,message=FALSE, fig.height=2}
+knitr::kable(mtcars_cyl)
+g2
+```
+
+### 4. Average *mpg* grouped by *gear* and *am*
+```{r,echo=FALSE,warning=FALSE,message=FALSE, fig.height=2}
+knitr::kable(mtcars_gear)
+g3
+
+```
+\newpage
+
+### 5.1. lm(*mpg* ~ *am* - 1, data = *mtcars*)
+```{r, echo=FALSE,warning=FALSE,message=FALSE}
+fit = lm(mpg ~ am - 1, data = mtcars)
+
+sumfit <- summary(fit)
+
+knitr::kable(t(
+data.frame(
+Residuals = unclass(summary(fit$residuals)),
+check.names = FALSE,
+stringsAsFactors = FALSE
+)
+))
+knitr::kable(data.frame(
+unclass(sumfit$coefficients),
+check.names = FALSE,
+stringsAsFactors = FALSE
+))
+knitr::kable(t(sumfit$fstatistic))
+knitr::kable(t(data.frame(
+label = c("R-squared", "Adjusted R-squared", "Sigma"),
+value = c(sumfit$r.squared, sumfit$adj.r.squared, sumfit$sigma)
+)))
+
+
+par(mfrow=c(2,2))
+plot(fit)
+
+```
+
+### 5.2. Prediction
+```{r, echo=FALSE,warning=FALSE,message=FALSE}
+knitr::kable(data.frame(Newdata = c("automatic","manual"),Predicted_Value = predict(fit,newdata = data.frame(am = c("automatic","manual")))))
+```
+
+### 6. lm(*mpg* ~ *am* + *wt* - 1, data = *mtcars*)
+```{r, echo=FALSE,warning=FALSE,message=FALSE}
+fit = lm(mpg ~ am + wt - 1, data = mtcars)
+sumfit <- summary(fit)
+
+knitr::kable(t(
+data.frame(
+Residuals = unclass(summary(fit$residuals)),
+check.names = FALSE,
+stringsAsFactors = FALSE
+)
+))
+knitr::kable(data.frame(
+unclass(sumfit$coefficients),
+check.names = FALSE,
+stringsAsFactors = FALSE
+))
+knitr::kable(t(sumfit$fstatistic))
+knitr::kable(t(data.frame(
+label = c("R-squared", "Adjusted R-squared", "Sigma"),
+value = c(sumfit$r.squared, sumfit$adj.r.squared, sumfit$sigma)
+)))
+```
+
+### 7. lm(*mpg* ~ *.* - 1, data = *mtcars*)
+```{r, echo=FALSE,warning=FALSE,message=FALSE}
+fit = lm(mpg ~ . - 1, data = mtcars)
+sumfit <- summary(fit)
+
+knitr::kable(t(
+data.frame(
+Residuals = unclass(summary(fit$residuals)),
+check.names = FALSE,
+stringsAsFactors = FALSE
+)
+))
+knitr::kable(data.frame(
+unclass(sumfit$coefficients),
+check.names = FALSE,
+stringsAsFactors = FALSE
+))
+knitr::kable(t(sumfit$fstatistic))
+knitr::kable(t(data.frame(
+label = c("R-squared", "Adjusted R-squared", "Sigma"),
+value = c(sumfit$r.squared, sumfit$adj.r.squared, sumfit$sigma)
+)))
+```

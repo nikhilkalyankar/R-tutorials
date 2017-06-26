@@ -1,0 +1,135 @@
+---
+title: "Peer graded assignment - Coursera"
+author: "Nikhil"
+date: "June 24, 2017"
+output: 
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Analysis {.tabset}
+
+
+### Introduction
+In this prediction project, we will attempt to predict the  classification of the quality of the exerices from the motion data of lifting weights recorded by wearable devices. The dataset for this purpose was provided by groupware technologies. For more information on this dataset, please visit: http://groupware.les.inf.puc-rio.br/har. 
+
+This dataset has 160 variables and our task is to predict the value of the variable **classe** and use any or all the other variables as predictors. The variables include: 
+
+ - identity variables: **user_name** and **timestamps**
+ - measurement variables: **roll**, **pitch**, **yaw**, **gyros**, **magnet**, **accel** and **total_accel** for each **belt**, **arm**, **dumbell** and **forearm**  
+ - statistic values: **kurtosis**, **skewness**, **amplitude**, **avg**, **min**, **max**, **stddev** and **var**.
+
+#### Load datasets 
+```{r, cache=TRUE,warning=FALSE,message=FALSE}
+train <- read.csv('pml-training.csv')
+test <- read.csv('pml-testing.csv')
+```
+
+#### Dimensions
+```{r, warning=FALSE,message=FALSE}
+dim(train)
+dim(test)
+```
+
+### Explore data 
+ - **Display the first 6 rows of the *train* dataset**
+```{r, warning=FALSE,message=FALSE}
+data.frame(head(train))
+```
+ - **Display the summary of the *train* dataset**
+```{r, warning=FALSE,message=FALSE}
+data.frame(unclass(summary(train)),check.names = FALSE,stringsAsFactors = FALSE)
+```
+ - **Plot **
+```{r, warning=FALSE,message=FALSE}
+library(ggplot2)
+ggplot()
+```
+ - **Plot **
+```{r, warning=FALSE,message=FALSE}
+ggplot()
+```
+ - **Plot **
+```{r, warning=FALSE,message=FALSE}
+ggplot()
+```
+ - **Plot **
+```{r, warning=FALSE,message=FALSE}
+ggplot()
+```
+ - **Plot **
+```{r, warning=FALSE,message=FALSE}
+ggplot()
+```
+
+
+### Filter Dataset
+ - The statistical columns have mostly missing values as they may be a summarization of all other measurement variables. 
+ - The identity columns including timestamps also will not contribute in the preparation of the prediction model.
+
+```{r, warning=FALSE,message=FALSE}
+# Select the first column X and columns 3 to 7 which includes timestamps and other unnecessary information
+colvec <- c(1,3:7) 
+# Select columns that have more than 19216 NA values and empty values
+filterCol <- function() {
+ for (i in 1:length(train))
+    if (sum(is.na(x = train[, i])) >= 19216 | sum("" == trimws(train[,i])) >= 19216)
+      colvec <- c(colvec, i)
+  colvec
+}
+colvec <- filterCol() 
+
+# Apply the column filter
+train <- train[,-colvec]
+test <- test[,-colvec]
+
+# Check dataset dimensions
+dim(train)
+dim(test)
+```
+
+
+### Fit model with random forest
+ - **Subset the *train* dataset into *training* and *crossv* **
+```{r, warning=FALSE,message=FALSE}
+# Load caret package
+library(caret)
+
+# Use createDataPartition function to split the train dataset into training and crossv
+inTrain <- createDataPartition(y = train$classe, p = 0.75, list = FALSE)
+training <- train[inTrain, ]
+crossv <- train[-inTrain, ]
+
+# Check dataset dimensions
+dim(training)
+dim(crossv)
+```
+ - **Fit the model**
+```{r, cache=TRUE,warning=FALSE,message=FALSE}
+
+modelFit <- train(classe ~.,data=training, method="rf",verbose=FALSE)
+
+```
+ - **Display the model summary**
+```{r, cache=TRUE,warning=FALSE,message=FALSE}
+summary(modelFit)
+```
+
+### Predict
+ -  **Apply predictions on the cross valiation dataset *crossv* **
+```{r,warning=FALSE,message=FALSE}
+library(caret)
+predictions <- predict(modelFit,newdata=crossv[,-length(crossv)])
+```
+ - **Display the Confusion Matrix**
+```{r,warning=FALSE,message=FALSE}
+confusionMatrix(predictions,crossv$classe)
+```
+ - **Apply the model to the test values**
+```{r,warning=FALSE,message=FALSE}
+predict(modelFit,newdata=test[,-length(test)])
+```
