@@ -17,12 +17,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Introduction
 In this prediction project, we will attempt to predict the  classification of the quality of the exerices from the motion data of lifting weights recorded by wearable devices. The dataset for this purpose was provided by groupware technologies. For more information on this dataset, please visit: http://groupware.les.inf.puc-rio.br/har. 
 
-This dataset has 160 variables and our task is to predict the value of the variable **classe** and use any or all the other variables as predictors. The variables include: 
-
- - identity variables: **user_name** and **timestamps**
- - measurement variables: **roll**, **pitch**, **yaw**, **gyros**, **magnet**, **accel** and **total_accel** for each **belt**, **arm**, **dumbell** and **forearm**  
- - statistic values: **kurtosis**, **skewness**, **amplitude**, **avg**, **min**, **max**, **stddev** and **var**.
-
 #### Load datasets 
 ```{r, cache=TRUE,warning=FALSE,message=FALSE}
 train <- read.csv('pml-training.csv')
@@ -36,40 +30,59 @@ dim(test)
 ```
 
 ### Explore data 
- - **Display the first 6 rows of the *train* dataset**
+
+
+
+ - **Display the first 6 rows of the *train* dataset** 
+
+This dataset has 160 variables and our task is to predict the value of the variable **classe** and use any or all the other variables as predictors. The variables include:
+ 
+1. identity variables: **user_name** and **timestamps**
+2. measurement variables: **roll**, **pitch**, **yaw**, **gyros**, **magnet**, **accel** and **total_accel** for each **belt**, **arm**, **dumbell** and **forearm**  
+3. statistic values: **kurtosis**, **skewness**, **amplitude**, **avg**, **min**, **max**, **stddev** and **var**.
+
+**Please refresh the page if you do not see the tables**
 ```{r, warning=FALSE,message=FALSE}
 data.frame(head(train))
 ```
  - **Display the summary of the *train* dataset**
+1. The statistical columns have mostly missing values as they may be a summarization of all the measurement variables. 
+2. The identity columns including timestamps also will not contribute in the preparation of the prediction model.
 ```{r, warning=FALSE,message=FALSE}
 data.frame(unclass(summary(train)),check.names = FALSE,stringsAsFactors = FALSE)
 ```
- - **Plot **
+
+ - **Plot 1: *roll_belt* vs *classe* box plot **
+ 
 ```{r, warning=FALSE,message=FALSE}
-library(ggplot2)
-ggplot()
+boxplot(roll_belt ~ classe, data = train, col = "bisque")
 ```
- - **Plot **
+
+ - **Plot 2:  *pitch_belt* vs *classe* box plot **
+ 
 ```{r, warning=FALSE,message=FALSE}
-ggplot()
+boxplot(pitch_belt ~ classe, data = train, col = "bisque")
 ```
- - **Plot **
+
+ - **Plot 3:  *yaw_belt* vs *classe* box plot**
+ 
 ```{r, warning=FALSE,message=FALSE}
-ggplot()
+boxplot(yaw_belt ~ classe, data = train, col = "bisque")
 ```
- - **Plot **
+
+ - **Plot 4:  *total_accel_belt* vs *classe* box plot**
 ```{r, warning=FALSE,message=FALSE}
-ggplot()
+boxplot(total_accel_belt ~ classe, data = train, col = "bisque")
 ```
- - **Plot **
+
+ - **Plot 5:  *magnet_belt_x* vs *classe* box plot**
+ 
 ```{r, warning=FALSE,message=FALSE}
-ggplot()
+boxplot(magnet_belt_x ~ classe, data = train, col = "bisque")
 ```
 
 
 ### Filter Dataset
- - The statistical columns have mostly missing values as they may be a summarization of all other measurement variables. 
- - The identity columns including timestamps also will not contribute in the preparation of the prediction model.
 
 ```{r, warning=FALSE,message=FALSE}
 # Select the first column X and columns 3 to 7 which includes timestamps and other unnecessary information
@@ -95,6 +108,9 @@ dim(test)
 
 ### Fit model with random forest
  - **Subset the *train* dataset into *training* and *crossv* **
+
+Using the caret package, we will split the *train* dataset into *training* and *crossv* or cross valiation dataset. The cross validation dataset will allows us to check the accuracy of the training model.
+
 ```{r, warning=FALSE,message=FALSE}
 # Load caret package
 library(caret)
@@ -109,6 +125,9 @@ dim(training)
 dim(crossv)
 ```
  - **Fit the model**
+
+The model is fit with the *classe* variable as the outcome and the measurement variables as the predictor. We will use the **Random Forest** method.
+
 ```{r, cache=TRUE,warning=FALSE,message=FALSE}
 
 modelFit <- train(classe ~.,data=training, method="rf",verbose=FALSE)
