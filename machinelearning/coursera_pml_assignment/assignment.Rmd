@@ -148,6 +148,14 @@ predictions <- predict(modelFit,newdata=crossv[,-length(crossv)])
 ```{r,warning=FALSE,message=FALSE}
 confusionMatrix(predictions,crossv$classe)
 ```
+ - **Out of sample error**
+```{r,warning=FALSE,message=FALSE}
+missClass = function(values, prediction) {
+    sum(prediction != values)/length(values)
+}
+missClass(crossv$classe, predictions)
+```
+
  - **Apply the model to the test values**
 ```{r,warning=FALSE,message=FALSE}
 predict(modelFit,newdata=test[,-length(test)])
